@@ -1,2 +1,2 @@
 Hello this is Prakash Yadav .I am building my first application in react native and starting my App developer journey. 
-This is Dailygram- an Social media app to share your daily life in the form of posts, videos, stories and message with your loved once and friend.
+This is Dailygram- an Social media app to share your daily life in the form of posts, videos, stories and message with your loved once and friend.gfhgf
