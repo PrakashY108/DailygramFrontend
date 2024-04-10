@@ -20,13 +20,13 @@ export default function TabNavigation() {
             </View>
           ),
         }} />
-      <Tab.Screen name='Search' component={SearchComponents} options={{
+      <Tab.Screen name='Search'  component={SearchComponents} options={{
         tabBarActiveBackgroundColor: '#80d2f2',
         tabBarIcon: ({ focused }) => (
           <View >
             <Image style={{ height: 25, width: 25 }} source={require('./Images/icons/search.png')} />
           </View>
-        )
+        ),tabBarHideOnKeyboard: true,
       }} />
       <Tab.Screen name='Upload' component={UploadComponents} options={{
         tabBarActiveBackgroundColor: '#80d2f2',
