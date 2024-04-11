@@ -21,10 +21,10 @@ export type RootScreenPramProps = {
     CreateAccount2: { st: string }
     ForgetPassword: { Email: string },
     notification: { userId: number }
-
+    
 }
 type notificationProp = NativeStackScreenProps<RootScreenPramProps, 'notification'>
-function StackNavigation({ navigation }: notificationProp) {
+function StackNavigation({navigation}:notificationProp) {
     return (
 
         <NavigationContainer>
@@ -43,11 +43,11 @@ function StackNavigation({ navigation }: notificationProp) {
                     title: 'Dailygram', headerTitleAlign: 'left',
                     headerRight: () => (
                         <View style={styles.container}>
-
+                            
                             <TouchableOpacity style={styles.container} >
                                 <Image style={{ height: 20, width: 20, paddingTop: 3 }} source={require("./Images/icons/notification.png")}></Image>
-                            </TouchableOpacity>
-
+                                </TouchableOpacity>
+                          
                         </View>
                     ),
                     headerStyle: { backgroundColor: '#80d2f2' }, headerTintColor: 'black', headerTitleStyle: { fontWeight: 'bold', fontSize: 37 }
