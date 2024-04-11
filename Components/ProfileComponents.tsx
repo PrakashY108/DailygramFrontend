@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View, Image,Button } from 'react-native'
+import { ScrollView, StyleSheet, Text, View, Image, Button } from 'react-native'
 import React from 'react'
 import Stories from '../HomeComponents/Stories'
 import TopTabNavigation from './TopTabNavigation'
@@ -34,18 +34,18 @@ export default function ProfileComponents() {
       </View>
       <View>
         <Text>Name-Prakash yadav</Text>
-        <Text style={{height:60,color:"black"}}>Bio - Lorem ipsum dolor sit amet consectetur adipisicing elit.
-         Quam, architecto.</Text>
-         <Button color={"#26e0d4"} title="Edit Profile"></Button>
-  
+        <Text style={{ height: 60, color: "black" }}>Bio - Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Quam, architecto.</Text>
+        <Button color={"#26e0d4"} title="Edit Profile"></Button>
+
       </View>
-      <View style={{flexWrap:"wrap",flex:1,flexDirection:"row",paddingVertical:50}}>
-      
+      <View style={{ flexWrap: "wrap", flex: 1, flexDirection: "row", paddingVertical: 50 }}>
+
         {data.map((data, index) => (
-             <View key={index} style={styles.post} >
-             <Image  style={styles.postImage} source={data.url}></Image>
-             </View>
-          ))}
+          <View key={index} style={styles.post} >
+            <Image style={styles.postImage} source={data.url}></Image>
+          </View>
+        ))}
       </View>
     </ScrollView>
   )
@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignContent: 'center',
-paddingHorizontal:20,
-paddingVertical:5,
+    paddingHorizontal: 20,
+    paddingVertical: 5,
     alignItems: 'center'
   },
   img: {
@@ -67,24 +67,24 @@ paddingVertical:5,
     borderRadius: 50,
 
   },
-  box:{
-    alignContent:'center',
-    alignItems:'center',
-    
+  box: {
+    alignContent: 'center',
+    alignItems: 'center',
+
   },
-  post:{
-    height:300,
-    width:200,
-    borderWidth:2,
-    borderColor:'white',
-  
+  post: {
+    height: 300,
+    width: 200,
+    borderWidth: 2,
+    borderColor: 'white',
+
   },
-  postImage:{
-    height:300,
-    width:200,
-    borderWidth:2,
-    borderColor:'white',
-    paddingVertical:30,
+  postImage: {
+    height: 300,
+    width: 200,
+    borderWidth: 2,
+    borderColor: 'white',
+    paddingVertical: 30,
   }
 
 })

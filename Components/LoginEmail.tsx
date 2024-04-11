@@ -1,14 +1,12 @@
 
 import React, { useState } from "react";
-import { View, Text, ScrollView, SafeAreaView, StyleSheet, TouchableOpacity, Button, Image, TextInput } from "react-native";
-import * as Yup from 'yup'
+import { View, Text, ScrollView, SafeAreaView, StyleSheet, Button, Image, TextInput } from "react-native";
 // navigation
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { RootScreenPramProps } from '../StackNavigation'
-type Emailprop = NativeStackScreenProps<RootScreenPramProps, 'Email'>
 
 
-function Login({ navigation }: Emailprop) {
+
+function Login({ navigation }) {
     const [email, setemail] = useState("")
     const [EmailError, setEmailError] = useState("")
 
@@ -27,7 +25,7 @@ function Login({ navigation }: Emailprop) {
         } else {
             setEmailError('');
             console.log("logged in");
-            navigation.navigate("Password", { password: 123 });
+            navigation.navigate("Password");
 
         }
     }
@@ -49,7 +47,7 @@ function Login({ navigation }: Emailprop) {
 
                 </View>
 
-                <View style={{ maxWidth: 400, flex: 1, flexDirection: 'row', justifyContent: 'center' }}><Button title="Create New Account" onPress={() => navigation.navigate("CreateAccount", { stats: 's' })}></Button></View>
+                <View style={{ maxWidth: 400, flex: 1, flexDirection: 'row', justifyContent: 'center' }}><Button title="Create New Account" onPress={() => navigation.navigate("CreateAccount")}></Button></View>
             </SafeAreaView>
         </ScrollView>
     )

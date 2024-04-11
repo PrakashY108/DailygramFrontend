@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Button, Text ,StyleSheet} from 'react-native';
+import { View, Button, Text, StyleSheet } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 
 const DocumentPickerExample = () => {
@@ -46,27 +46,27 @@ const DocumentPickerExample = () => {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',margin:10 }}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', margin: 10 }}>
       <View style={styles.btn}>
-        <Button  title="Upload Post" onPress={pickImage} />
-        </View >
+        <Button title="Upload Post" onPress={pickImage} />
+      </View >
       <View style={styles.btn}>
-      <Button title="Upload Reels" onPress={pickReel} />
-        </View >
-     
+        <Button title="Upload Reels" onPress={pickReel} />
+      </View >
+
     </View>
   );
 };
 
 export default DocumentPickerExample;
 const styles = StyleSheet.create({
-  btn:{
-    backgroundColor:'red',
-     flex: 1,
-       justifyContent: 'center', 
-       alignItems: 'center',
-       margin:5,
-       marginVertical:3,
-       maxHeight:40
+  btn: {
+    backgroundColor: 'red',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 5,
+    marginVertical: 3,
+    maxHeight: 40
   }
 })

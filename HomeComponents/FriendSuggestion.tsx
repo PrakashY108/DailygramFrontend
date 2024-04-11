@@ -6,52 +6,52 @@ import CustomButton from '../CustomComponents/CustomButton'
 
 export default function FriendSuggestion() {
     return (
-        <SafeAreaView  > 
+        <SafeAreaView  >
             {/* horizontal line */}
-                <View style={styles.hrline}></View>
-                <Text style={[{fontSize:20,margin:5}]}>Suggestion for you</Text>
-           
-                <View style={styles.hrline}></View>
-                {/* for scrolling horizontally */}
+            <View style={styles.hrline}></View>
+            <Text style={[{ fontSize: 20, margin: 5 }]}>Suggestion for you</Text>
+
+            <View style={styles.hrline}></View>
+            {/* for scrolling horizontally */}
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
                 {/* main  container  */}
                 <View style={styles.container} >
                     {/* Friend request 1 */}
                     <View style={styles.main}>
-                   
-                        <View style={styles.friendimg}><Image style={styles.friendimg} source={require('../Images/img/object.png')}/></View>
+
+                        <View style={styles.friendimg}><Image style={styles.friendimg} source={require('../Images/img/object.png')} /></View>
                         <Text>Mohankumar321</Text>
                         <View style={styles.followed} >
-                        <Image source={require('../Images/img/lordshiva.jpg')} style={styles.followedimg}/><Text>By Rameshbhai</Text>
+                            <Image source={require('../Images/img/lordshiva.jpg')} style={styles.followedimg} /><Text>By Rameshbhai</Text>
                         </View>
                         <CustomButton title="Follow" />
                     </View>
-                 
+
                     {/* Friend request 2 */}
                     <View style={styles.main}>
-                   
-                        <View style={styles.friendimg}><Image style={styles.friendimg} source={require('../Images/img/car.jpg')}/></View>
+
+                        <View style={styles.friendimg}><Image style={styles.friendimg} source={require('../Images/img/car.jpg')} /></View>
                         <Text>Mohankumar321</Text>
                         <View style={styles.followed} >
-                        <Image source={require('../Images/img/object.png')} style={styles.followedimg}/><Text>By Rameshbhai</Text>
+                            <Image source={require('../Images/img/object.png')} style={styles.followedimg} /><Text>By Rameshbhai</Text>
                         </View>
                         <CustomButton title="Follow" />
                     </View>
-                 
+
                     {/* Friend request 3 */}
                     <View style={styles.main}>
-                   
-                        <View style={styles.friendimg}><Image style={styles.friendimg} source={require('../Images/img/lordshiva.jpg')}/></View>
+
+                        <View style={styles.friendimg}><Image style={styles.friendimg} source={require('../Images/img/lordshiva.jpg')} /></View>
                         <Text>Mohankumar321</Text>
                         <View style={styles.followed} >
-                        <Image source={require('../Images/img/car.jpg')} style={styles.followedimg}/><Text>By Rameshbhai</Text>
+                            <Image source={require('../Images/img/car.jpg')} style={styles.followedimg} /><Text>By Rameshbhai</Text>
                         </View>
                         <CustomButton title="Follow" />
                     </View>
-                 
+
                 </View>
             </ScrollView>
-                    <View style={styles.hrline}></View>
+            <View style={styles.hrline}></View>
         </SafeAreaView>
     )
 }
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'row',
-    
+
     },
     main: {
         height: 240,
@@ -77,14 +77,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         marginHorizontal: 20,
         marginVertical: 15,
-   
+
     },
     hrline: {
         opacity: 1,
         height: 1,
         backgroundColor: 'black',
         marginVertical: 5,
-        
+
     },
     friendimg: {
         maxHeight: 100,

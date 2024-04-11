@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, TextInput } from 'react-native'
 
 function CustomInput() {
   return (
- <TextInput placeholder="Enter here" style={styles.input} ></TextInput>
+    <TextInput placeholder="Enter here" style={styles.input} ></TextInput>
   )
 }
 
@@ -23,5 +23,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderColor: 'black',
     borderWidth: 1
-}
+  }
 })

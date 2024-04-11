@@ -19,15 +19,15 @@ function CreateAccount2({ navigation }: Accountprop) {
 
                     <Image style={styles.logo} source={require("../Images/img/Logo.jpg")} />
 
-                    <TextInput style={styles.input}  placeholder="Create Username" ></TextInput>
-                   
+                    <TextInput style={styles.input} placeholder="Create Username" ></TextInput>
+
                     <TextInput style={styles.input} placeholder="Create Password" ></TextInput>
-                   
+
                     <TextInput style={styles.input} placeholder="Confirm Password" ></TextInput>
-                    
 
 
-                    <Button onPress={() => navigation.navigate("Dailygram", {name: 'r' })}  color={"green"} title=" Create Account " />
+
+                    <Button onPress={() => navigation.navigate("Dailygram", { name: 'r' })} color={"green"} title=" Create Account " />
 
 
                 </View>

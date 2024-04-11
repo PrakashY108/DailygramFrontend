@@ -16,16 +16,16 @@ function CreateAccount({ navigation }: Accountprop) {
             horizontal={false}>
             <SafeAreaView>
                 <View style={styles.container}>
-                  <Image style={styles.logo} source={require("../Images/img/Logo.jpg")} />
-      <TextInput style={styles.input} placeholder=" Enter First Name"></TextInput>
-      <TextInput style={styles.input} placeholder=" Enter Last Name"></TextInput>
-      <TextInput style={styles.input} placeholder=" Enter Email "></TextInput>
-      <TextInput style={styles.input} placeholder=" Enter Phone Number"></TextInput>
-      <TextInput style={styles.input} placeholder="Enter DOB"></TextInput>
-                    
+                    <Image style={styles.logo} source={require("../Images/img/Logo.jpg")} />
+                    <TextInput style={styles.input} placeholder=" Enter First Name"></TextInput>
+                    <TextInput style={styles.input} placeholder=" Enter Last Name"></TextInput>
+                    <TextInput style={styles.input} placeholder=" Enter Email "></TextInput>
+                    <TextInput style={styles.input} placeholder=" Enter Phone Number"></TextInput>
+                    <TextInput style={styles.input} placeholder="Enter DOB"></TextInput>
 
 
-                    <Button onPress={() => navigation.navigate("CreateAccount2", { st: 'r' })}  color={"green"} title=" Next " />
+
+                    <Button onPress={() => navigation.navigate("CreateAccount2", { st: 'r' })} color={"green"} title=" Next " />
 
 
                 </View>

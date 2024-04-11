@@ -1,22 +1,22 @@
 
 import React, { useState } from "react";
 import {
-    View, Text, ScrollView, SafeAreaView, StyleSheet,Button,Image,TouchableOpacity,TextInput
+    View, Text, ScrollView, SafeAreaView, StyleSheet, Button, Image, TouchableOpacity, TextInput
 } from "react-native";
 
 
 // navigation
-import {NativeStackScreenProps} from '@react-navigation/native-stack'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootScreenPramProps } from '../StackNavigation'
-type Passwordprop= NativeStackScreenProps<RootScreenPramProps,'Password'>
-export default function LoginPassword({navigation}:Passwordprop) {
+type Passwordprop = NativeStackScreenProps<RootScreenPramProps, 'Password'>
+export default function LoginPassword({ navigation }: Passwordprop) {
     const [password, setpassword] = useState("")
-  
+
     const [PasswordError, setPasswordError] = useState("")
 
     const validateEmail = (password) => {
-     
-        return password.length>=6;
+
+        return password.length >= 6;
     };
     const handleValidation = () => {
         let valid = true;
@@ -27,32 +27,32 @@ export default function LoginPassword({navigation}:Passwordprop) {
         } else {
             setPasswordError('');
             console.log("logged in");
-            navigation.replace("Dailygram",{name:'prakash'})
+            navigation.replace("Dailygram", { name: 'prakash' })
 
         }
     }
-    const forgretPassword=()=>{
-        navigation.navigate("ForgetPassword",{Email:"red"});
-            }
+    const forgretPassword = () => {
+        navigation.navigate("ForgetPassword", { Email: "red" });
+    }
     return (
         <ScrollView showsVerticalScrollIndicator={true}
             horizontal={false}>
             <SafeAreaView>
-                
-         
+
+
                 <View style={styles.container}>
-                <Image style={styles.logo} source={require("../Images/img/Logo.jpg")}/>
-                   
+                    <Image style={styles.logo} source={require("../Images/img/Logo.jpg")} />
+
                     <TextInput style={styles.input} onChangeText={setpassword} value={password} placeholder="Enter your password " ></TextInput>
                     {PasswordError ? <Text style={{ color: 'red' }} >{PasswordError}</Text> : null}
-                
 
-                    <Button color={"green"} onPress={handleValidation}  title="Log in" />
-                  
-               <TouchableOpacity onPress={forgretPassword}>
-                   <Text> Forgot Password? <Text style={styles.link}>Click here</Text></Text>
-               </TouchableOpacity>
-    
+
+                    <Button color={"green"} onPress={handleValidation} title="Log in" />
+
+                    <TouchableOpacity onPress={forgretPassword}>
+                        <Text> Forgot Password? <Text style={styles.link}>Click here</Text></Text>
+                    </TouchableOpacity>
+
 
 
                 </View>
@@ -85,13 +85,13 @@ const styles = StyleSheet.create({
         color: 'blue'
 
     },
-    logo:{
-        height:120,
-        width:120,
-        flex:1,
-        justifyContent:'center',
-        alignContent:'center',
-        alignSelf:'center',
+    logo: {
+        height: 120,
+        width: 120,
+        flex: 1,
+        justifyContent: 'center',
+        alignContent: 'center',
+        alignSelf: 'center',
         borderRadius: 30
     },
     input: {

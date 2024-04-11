@@ -90,10 +90,10 @@ const styles = StyleSheet.create({
     height: 30,
     marginTop: 10,
     fontWeight: "bold",
-    borderRadius:5,
-    marginVertical:5,
-    paddingHorizontal:10,
-    textAlignVertical:'center'
+    borderRadius: 5,
+    marginVertical: 5,
+    paddingHorizontal: 10,
+    textAlignVertical: 'center'
 
 
   },
