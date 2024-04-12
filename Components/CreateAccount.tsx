@@ -1,7 +1,7 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, ScrollView, SafeAreaView, StyleSheet, Button, Image, TextInput } from "react-native";
-
+import axios from 'axios'; // Import Axios for making HTTP requests
 // navigation
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootScreenPramProps } from '../StackNavigation'
@@ -9,8 +9,48 @@ type Accountprop = NativeStackScreenProps<RootScreenPramProps, 'CreateAccount2'>
 
 
 function CreateAccount({ navigation }: Accountprop) {
-
-
+    const [firstName, setFirstName] = useState('');
+    const [usercreated, setusercreated] = useState(false);
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [DOB, setDOB] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const createUser = async () => {
+        try {
+            const response = await fetch('http://localhost:6000/createUser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    firstName,
+                    lastName,
+                    email,
+                    phoneNo: phoneNumber,
+                    DOB,
+                    username,
+                    password,
+                }),
+            });
+            const data = await response.json();
+            console.log(data);
+            // Handle navigation or display success message here
+            setusercreated(true);
+        } catch (error) {
+            console.error('Error creating user:', error);
+            // Handle error or display error message here
+        }
+    
+        if (!setusercreated) {
+            console.log("error meri");
+        } else {
+            navigation.navigate("Dailygram", { name: 'r' });
+        }
+    };
+    
     return (
         <ScrollView showsVerticalScrollIndicator={true}
             horizontal={false}>
@@ -22,11 +62,11 @@ function CreateAccount({ navigation }: Accountprop) {
                     <TextInput style={styles.input} placeholder=" Enter Email "></TextInput>
                     <TextInput style={styles.input} placeholder=" Enter Phone Number"></TextInput>
                     <TextInput style={styles.input} placeholder="Enter DOB"></TextInput>
+                    <TextInput style={styles.input} placeholder="Create Username" ></TextInput>
+                    <TextInput style={styles.input} placeholder="Create Password" ></TextInput>
+                    <TextInput style={styles.input} placeholder="Confirm Password" ></TextInput>
 
-
-
-                    <Button onPress={() => navigation.navigate("CreateAccount2", { st: 'r' })} color={"green"} title=" Next " />
-
+                    <Button onPress={createUser} color={"green"} title=" Create Account " />
 
                 </View>
             </SafeAreaView>
