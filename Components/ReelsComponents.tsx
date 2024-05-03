@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View, Image, Share, TouchableOpacity } from 'react-native'
+import { ScrollView, StyleSheet, Text, View, Image, Share, TouchableOpacity,FlatList } from 'react-native'
 import React, { useState } from 'react'
 import Video from 'react-native-video';
 export default function ReelsComponents() {
@@ -18,6 +18,7 @@ export default function ReelsComponents() {
   const [saved, setsaved] = useState(false);
   const [commentclose, commentopen] = useState(false);
   const [share, setshare] = useState(false);
+  const [paused, setpaused] = useState(false);
 
 
   const handleLike = () => {
@@ -52,38 +53,67 @@ export default function ReelsComponents() {
 
     }
   };
+  const handlepause = () => {
+    console.log("kdsbfhswa");
+    
+    if (!paused) {
+      console.log("Pausing video");
+      setpaused(true);
+      console.log(paused);
+      
+    } else {
+      console.log("Resuming video");
+      setpaused(false);
+      console.log(paused);
+      
+    }
+  };
+  
+  const renderItem = ({ item }) => (
+    <View style={styles.video}>
+      <TouchableOpacity onPress={handlepause}>
+        <Video 
+        controls={false}
+        volume={100}
+       
+        paused={paused}
+       
+        resizeMode='contain'
+        fullscreen
+        fullscreenOrientation='landscape'
+        source={item.url}
+        onError={() => console.warn("error while loading")}
+        style={{ height: 760, width: "100%" }}
+      />
+      <Text style={styles.text}>{item.title}</Text>
+      <Text style={styles.description}>{item.description}</Text>
+      <View style={styles.boxIcon}>
+        <TouchableOpacity onPress={handleLike}>
+          <Image style={[styles.icons, liked ? styles.liked : null]} source={require("../Images/icons/like.jpg")} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handlecomment}>
+          <Image style={[styles.icons, commentclose ? styles.liked : null]} source={require("../Images/icons/comment.png")} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleShare}>
+          <Image style={[styles.icons, share ? styles.liked : null]} source={require("../Images/icons/share.png")} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handlesave}>
+          <Image style={[styles.icons, saved ? styles.liked : null]} source={require("../Images/icons/save.webp")} />
+        </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
+    </View>
+  );
   return (
-
-    <ScrollView showsVerticalScrollIndicator>
-      {data.map((data, index) => (
-        <View key={index} style={styles.video}>
-          <Video controls={false} volume={100} muted paused={true}
-            resizeMode='contain' fullscreen fullscreenOrientation='landscape'
-            source={data.url}
-            onError={() => console.warn("errorwhile loading")}
-            style={{ height: 760, width: "100%" }} />
-          <Text style={styles.text}>{data.title}</Text>
-          <Text style={styles.description}>{data.description}</Text>
-          <View style={styles.boxIcon}>
-            <TouchableOpacity onPress={handleLike}>
-              <Image style={[styles.icons, liked ? styles.liked : null]} source={require("../Images/icons/like.jpg")} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handlecomment}>
-              <Image style={[styles.icons, commentclose ? styles.liked : null]} source={require("../Images/icons/comment.png")} />
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={handleShare}>
-              <Image style={[styles.icons, share ? styles.liked : null]} source={require("../Images/icons/share.png")} />
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={handlesave}>
-              <Image style={[styles.icons, saved ? styles.liked : null]} source={require("../Images/icons/save.webp")} />
-            </TouchableOpacity>
-          </View>
-        </View>))}
-
-    </ScrollView>
-  )
+  
+      <FlatList
+        data={data}
+        pagingEnabled
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={renderItem}
+      />
+  
+  );
 }
 
 const styles = StyleSheet.create({

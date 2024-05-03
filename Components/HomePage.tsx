@@ -5,12 +5,10 @@ import Stories from '../HomeComponents/Stories'
 import HomeMiddle from '../HomeComponents/HomeMiddle'
 
 export default function HomePage() {
-  return (<ScrollView style={{ padding: 7 }}>
-    <Stories />
-    <HomeMiddle />
-
-  </ScrollView>
+  return(
+    <View>
+     <Stories />
+      <HomeMiddle />
+    </View>
   )
 }
-
-const styles = StyleSheet.create({})

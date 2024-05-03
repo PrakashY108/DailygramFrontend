@@ -1,55 +1,57 @@
-import { ScrollView, StyleSheet, Text, View, Image, Button } from 'react-native'
-import React from 'react'
-import Stories from '../HomeComponents/Stories'
-import TopTabNavigation from './TopTabNavigation'
+import React, { useEffect,useState } from 'react';
+import { View, Text, ScrollView, Image, Button, StyleSheet } from 'react-native';
+import Posts from './UserPosts';
+import { useUser } from '../context/Usecontext';
+import axios from 'axios';
 
+const UserData = () => {
+  const { userid } = useUser();
+  const [userdata,setuserdata] =useState([])
 
-TopTabNavigation
-export default function ProfileComponents() {
-  const data = [
-    {
-      title: 'Car',
-      url: require('../Images/img/car.jpg')
-    },
-    {
-      title: 'Image',
-      url: require('../Images/img/images.jpg')
-    },
-    {
-      title: 'Logo',
-      url: require('../Images/img/Logo.jpg')
-    },
-    {
-      title: 'Lordshiva',
-      url: require('../Images/img/lordshiva.jpg')
-    },
-  ]
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+  
+        const response = await axios.post("http://10.0.2.2:6000/fetchUser", { userid }); 
+        console.log(response.data);
+         setuserdata(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchData();
+  }, [userid]);
+return userdata;
+}; 
+
+const ProfileComponents = () => {
+const userdata = UserData()
+console.log(userdata);
+const {setfollowers}=useUser();
+setfollowers(userdata.follower)
+  
   return (
     <ScrollView horizontal={false}>
       <View style={styles.top}>
         <Image style={styles.img} resizeMode='contain' source={require("../Images/img/Logo.jpg")}></Image>
-        <View style={styles.box}><Text>17</Text><Text>posts</Text></View>
-        <View style={styles.box}><Text>443</Text><Text>followed</Text></View>
-        <View style={styles.box}><Text>98</Text><Text>following</Text></View>
+        <View style={styles.box}><Text>{userdata.posts}</Text><Text>posts</Text></View>
+        <View style={styles.box}><Text>{userdata.follower}</Text><Text>follower</Text></View>
+        <View style={styles.box}><Text>{userdata.following}</Text><Text>following</Text></View>
       </View>
       <View>
-        <Text>Name-Prakash yadav</Text>
-        <Text style={{ height: 60, color: "black" }}>Bio - Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Quam, architecto.</Text>
+        <Text style={styles.text}>{userdata.username}</Text>
+        <Text style={{ height: 60, color: "black" }}>{userdata.Bio}</Text>
         <Button color={"#26e0d4"} title="Edit Profile"></Button>
-
       </View>
-      <View style={{ flexWrap: "wrap", flex: 1, flexDirection: "row", paddingVertical: 50 }}>
-
-        {data.map((data, index) => (
-          <View key={index} style={styles.post} >
-            <Image style={styles.postImage} source={data.url}></Image>
-          </View>
-        ))}
+      <View style={{ flex: 1 }}>
+    <Posts/>
       </View>
     </ScrollView>
-  )
-}
+  );
+};
+
+export default ProfileComponents;
 
 const styles = StyleSheet.create({
   top: {
@@ -62,22 +64,19 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   img: {
-    height: 100,
-    width: 100,
+    height: 80,
+    width: 80,
     borderRadius: 50,
-
   },
   box: {
     alignContent: 'center',
     alignItems: 'center',
-
   },
   post: {
-    height: 300,
-    width: 200,
+    height: 260,
+    width: 150,
     borderWidth: 2,
     borderColor: 'white',
-
   },
   postImage: {
     height: 300,
@@ -85,6 +84,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'white',
     paddingVertical: 30,
+  },text:{
+    paddingHorizontal:30,
+    fontSize:18,
+    fontWeight:"bold"
   }
-
-})
+});

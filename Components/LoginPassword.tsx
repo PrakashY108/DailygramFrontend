@@ -1,36 +1,54 @@
 
 import React, { useState } from "react";
 import {
-    View, Text, ScrollView, SafeAreaView, StyleSheet, Button, Image, TouchableOpacity, TextInput
+    View, Text, ScrollView, SafeAreaView, StyleSheet, Button, Image, TouchableOpacity, TextInput, ActivityIndicator
 } from "react-native";
-
+import axios from "axios";
+import { useUser } from '../context/Usecontext';
 
 // navigation
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootScreenPramProps } from '../StackNavigation'
-type Passwordprop = NativeStackScreenProps<RootScreenPramProps, 'Password'>
-export default function LoginPassword({ navigation }: Passwordprop) {
+import { CommonActions, StackActions } from "@react-navigation/native";
+type Passwordprop = NativeStackScreenProps<RootScreenPramProps, 'Dailygram'>
+
+export default function LoginPassword({ navigation, route }: Passwordprop) {
     const [password, setpassword] = useState("")
-
     const [PasswordError, setPasswordError] = useState("")
+    const [isloading, setisloading] = useState(false)
 
-    const validateEmail = (password) => {
+    const handlePassword = () => {
+        setisloading(true)
+        console.log(route.params)
+        const username = route.params.Email;
+        axios.post("http://10.0.2.2:6000/login", { username, password }).then(() => {
+            console.log("logged in")
+            navigation.dispatch(CommonActions.navigate("Dailygram", { name: username }))
+            axios.post("http://10.0.2.2:6000/fetchUser", { username })
+                .then((response) => {
+                    setisloading(false)
+                    const id = response.data.userId;
+                    // updating user in usercontext 
+                    handlecontext(id, username)
+                })
+        }).catch((err) => {
+            setisloading(false)
+            setPasswordError("Please enter correct password")
+            console.log("please enter correct password", err)
 
-        return password.length >= 6;
-    };
-    const handleValidation = () => {
-        let valid = true;
-
-        if (!validateEmail(password)) {
-            setPasswordError('Password must be 6 characters');
-            valid = false;
-        } else {
-            setPasswordError('');
-            console.log("logged in");
-            navigation.replace("Dailygram", { name: 'prakash' })
-
-        }
+        })
     }
+    //context
+    const { setUserid, setEmail } = useUser();
+    const handlecontext = (userid, email) => {
+        setUserid(userid)
+        setEmail(email)
+    }
+    if(isloading){
+        return <ActivityIndicator style={{flex:1,alignItems:'center',justifyContent:"center"}} size={"large"} color={"blue"}></ActivityIndicator>
+    }
+
+
     const forgretPassword = () => {
         navigation.navigate("ForgetPassword", { Email: "red" });
     }
@@ -38,17 +56,11 @@ export default function LoginPassword({ navigation }: Passwordprop) {
         <ScrollView showsVerticalScrollIndicator={true}
             horizontal={false}>
             <SafeAreaView>
-
-
                 <View style={styles.container}>
                     <Image style={styles.logo} source={require("../Images/img/Logo.jpg")} />
-
-                    <TextInput style={styles.input} onChangeText={setpassword} value={password} placeholder="Enter your password " ></TextInput>
+                    <TextInput style={styles.input} secureTextEntry onChangeText={setpassword} value={password} placeholder="Enter your password " ></TextInput>
                     {PasswordError ? <Text style={{ color: 'red' }} >{PasswordError}</Text> : null}
-
-
-                    <Button color={"green"} onPress={handleValidation} title="Log in" />
-
+                    <Button color={"green"} onPress={handlePassword} title="Log in" />
                     <TouchableOpacity onPress={forgretPassword}>
                         <Text> Forgot Password? <Text style={styles.link}>Click here</Text></Text>
                     </TouchableOpacity>
@@ -67,7 +79,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         width: 410,
-
+        alignSelf: "center",
         padding: 40,
         marginTop: 45,
         borderColor: "transparent",

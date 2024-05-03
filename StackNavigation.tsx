@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useContext } from 'react';
 // navigation
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import TabNavigation from "./TabNavigation";
@@ -10,21 +11,21 @@ import LoginPassword from './Components/LoginPassword';
 import CreateAccount from './Components/CreateAccount';
 import ForgetPassword from './FunctionalComponents/ForgetPassword';
 import NotificationComponent from './FunctionalComponents/NotificationComponent';
-import CreateAccount2 from './Components/CreateAccount2';
+
 
 const Stack = createNativeStackNavigator<RootScreenPramProps>();
+
 export type RootScreenPramProps = {
     Dailygram: { name: string },
     Email: { Email: string },
-    Password: { password: number },
+    Password: { Email: string },
     CreateAccount: { stats: string }
-    CreateAccount2: { st: string }
     ForgetPassword: { Email: string },
     notification: { userId: number }
-    
+
 }
 type notificationProp = NativeStackScreenProps<RootScreenPramProps, 'notification'>
-function StackNavigation({navigation}:notificationProp) {
+function StackNavigation({ navigation }: notificationProp) {
     return (
 
         <NavigationContainer>
@@ -36,18 +37,17 @@ function StackNavigation({navigation}:notificationProp) {
                 <Stack.Screen name="Email" component={LoginEmail} />
                 <Stack.Screen name="Password" component={LoginPassword} />
                 <Stack.Screen name="CreateAccount" component={CreateAccount} />
-                <Stack.Screen name="CreateAccount2" component={CreateAccount2} />
                 <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
                 <Stack.Screen name="notification" component={NotificationComponent} />
                 <Stack.Screen name="Dailygram" component={TabNavigation} options={{
                     title: 'Dailygram', headerTitleAlign: 'left',
                     headerRight: () => (
                         <View style={styles.container}>
-                            
+
                             <TouchableOpacity style={styles.container} >
                                 <Image style={{ height: 20, width: 20, paddingTop: 3 }} source={require("./Images/icons/notification.png")}></Image>
-                                </TouchableOpacity>
-                          
+                            </TouchableOpacity>
+
                         </View>
                     ),
                     headerStyle: { backgroundColor: '#80d2f2' }, headerTintColor: 'black', headerTitleStyle: { fontWeight: 'bold', fontSize: 37 }
