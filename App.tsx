@@ -1,14 +1,14 @@
 import React from 'react';
+import { UserProvider } from './context/Usecontext';
 import StackNavigation from './StackNavigation';
 
 
-function App() {
-    return (
-        <>
+const App= () =>{
+  return (
+    <UserProvider>
    <StackNavigation />
-   
-
-        </>
-    );
+    </UserProvider>
+  );
 }
+
 export default App;
