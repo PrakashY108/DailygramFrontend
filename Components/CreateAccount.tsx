@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { View, Text, ScrollView, SafeAreaView, StyleSheet, Button, Image, TextInput,Alert } from "react-native";
 import axios from 'axios'; // Import Axios
-
 import { validationSchema } from "./ValidationSchema"
-// Define Yup validation schema
+import UploadProfilephoto from "./UploadProfilephoto";
 
+
+// Define Yup validation schema
 
 function CreateAccount({ navigation }) {
 
@@ -17,7 +18,6 @@ function CreateAccount({ navigation }) {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errors, setErrors] = useState<any>({});
-
     const createAccount = () => {
         validationSchema.validate({
             firstName,
@@ -27,10 +27,10 @@ function CreateAccount({ navigation }) {
             DOB,
             username,
             password,
-            confirmPassword
+            confirmPassword 
         }, { abortEarly: false })
-            .then(() => {
-                // Validation passed, make API call
+      .then(()=>{
+        //validation completed
                 // Important Note: in fetching api in react native/ app we use localhost = 10.0.2.2
                 try {
                     axios.post('http://10.0.2.2:6000/createUser', {    //10.0.2.2 = localhost
@@ -44,7 +44,7 @@ function CreateAccount({ navigation }) {
                 }).then(response => {
                     // Handle successful response
                     console.log(response.data);
-                    navigation.navigate("Email", {Email: "d" });
+                    navigation.navigate("Login");
                         // Navigate to another screen upon successful account creation
                         Alert.alert("Account created Successsfully .Login here")
                     })
@@ -123,8 +123,10 @@ function CreateAccount({ navigation }) {
                         secureTextEntry
                     />
                     {errors.confirmPassword ? <Text style={styles.error}>{errors.confirmPassword}</Text> : null}
-
-                    <Button onPress={createAccount} color={"green"} title=" Create Account " />
+                    <View style={styles.btn}>
+                    <UploadProfilephoto/>
+                    <Button  onPress={createAccount} color={"green"} title=" Create Account " />
+                    </View>
                 </View>
             </SafeAreaView>
         </ScrollView>
@@ -137,9 +139,8 @@ const styles = StyleSheet.create({
         alignContent: "center",
         flex: 1,
         justifyContent: 'center',
-        width: 410,
+        width: "98%",
         padding: 40,
-        marginTop: 45,
         borderColor: "transparent",
         borderWidth: 1,
         marginBottom: 10,
@@ -153,7 +154,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'center',
         alignSelf: 'center',
-        borderRadius: 30
+        borderRadius: 70,
+        margin:0
     },
     title: {
         color: "black",
@@ -178,7 +180,7 @@ const styles = StyleSheet.create({
     },
     input: {
         color: "black",
-        width: 330,
+        width: "100%",
         flex: 1,
         borderRadius: 10,
         padding: 8,
@@ -192,5 +194,10 @@ const styles = StyleSheet.create({
     error: {
         color: 'red',
         marginBottom: 5
+    },
+    btn:{
+        paddingTop:10,
+        paddingBottom:10,
+        gap:30
     }
 });

@@ -7,8 +7,9 @@ import { useUser } from '../context/Usecontext';
 const UploadComponents = () => {
   const [pickedImage, setPickedImage] = useState(null); // Specify the type as DocumentPickerResponse | null
   const [pickedReel, setPickedReel] = useState(null); // Specify the type as DocumentPickerResponse | null
-  const { userid } = useUser();
-  const pickImage = async () => {
+  const { userData, setuserData } = useUser();
+
+  const pickPosts = async () => {
     try {
 
       const file = await DocumentPicker.pick({
@@ -16,10 +17,10 @@ const UploadComponents = () => {
       });
 
       setPickedImage(file);
-      
+    
       console.log("Image picked successfully");
-
-      await uploadFile(file,userid);
+     const userid = userData.userId
+      await uploadPosts(file,userid);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         console.log('You cancelled the pick');
@@ -27,26 +28,7 @@ const UploadComponents = () => {
         console.log('Error while picking the file: ' + err);
       }
     }
-  };
-
-  const pickReel = async () => {
-    try {
-      const file = await DocumentPicker.pick({
-        type: [DocumentPicker.types.video],
-      });
-      setPickedReel(file);
-      uploadFile(file,userid);
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        console.log('User cancelled the picker');
-      } else {
-        console.log('Error while picking the file: ' + err);
-      }
-    }
-  };
-
-  
-  const uploadFile = async (file,userid) => {
+  };const uploadPosts = async (file,userid) => {
     try {
       console.log(userid)
       const data = file[0];
@@ -60,29 +42,80 @@ const UploadComponents = () => {
         
       });
       formData.append('id', userid);
-      
-      const response = await axios.post("http://10.0.2.2:6000/upload", formData, {
+      formData.append('name', "posts");
+      const response = await axios.post("http://10.0.2.2:6000/upload/cloudinary", formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log("File uploaded successfully");
-      Alert.alert("File uploaded successfully")
+      console.log("Posts uploaded successfully");
+      Alert.alert("Posts uploaded successfully")
       console.log(response.data);
     } catch (err) {
-      console.log('Error uploading file:', err);
+      console.log('Error uploading posts:', err);
     }
   };
+
+  const pickReels = async () => {
+    try {
+
+      const file = await DocumentPicker.pick({
+        type: [DocumentPicker.types.video],
+      });
+
+      setPickedReel(file);
+    
+      console.log("Image picked successfully");
+     const userid = userData.userId
+     uploadVideos(file,userid);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        console.log('You cancelled the pick');
+      } else {
+        console.log('Error while picking the file: ' + err);
+      }
+    }
+  }; 
+  
+  const uploadVideos = async (file,userid) => {
+    try {
+      console.log(userid)
+      const data = file[0];
+      const formData = new FormData();
+      console.log(data)
+      formData.append('file', {
+        uri: data.uri,
+        name: data.name,
+        type: data.type,
+        url :userid
+        
+      });
+      formData.append('id', userid);
+      formData.append('name', "reels");
+      const response = await axios.post("http://10.0.2.2:6000/upload/cloudinary", formData, {
+        timeout: 60000,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log("Video uploaded successfully");
+      Alert.alert("Video uploaded successfully")
+      console.log(response.data);
+    } catch (err) {
+      console.log('Error uploading video:', err);
+    }
+  };
+
   
 
   return (
     <View style={styles.container}>
       <View style={styles.btn}>
-        <Button title="Upload Photo" onPress={pickImage} />
+        <Button title="Upload Photo" onPress={pickPosts} />
         </View>
       
       <View  style={styles.btn} >
-      <Button title="Upload Video" onPress={pickReel} />
+      <Button title="Upload Video" onPress={pickReels} />
         </View>
       
     </View>

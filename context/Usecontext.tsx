@@ -1,28 +1,13 @@
 import React, { createContext, useContext, useState } from 'react';
-// Define the shape of the context value
-interface UserContextType {
-    userid: number | null;
-    email: string | null;
-    setUserid: (id: number | null) => void;
-    setEmail: (email: string | null) => void;
-  }
-  
-  // Create the context with a default value
-  const initialContext: UserContextType = {
-    userid: null,
-    email: null,
-    setUserid: () => {},
-    setEmail: () => {},
-  };
-  const UserContext = createContext<UserContextType>(initialContext);
+
+
+  const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [userid, setUserid] = useState(null);
-  const [email, setEmail] = useState(null);
-  const[followers,setfollowers]=useState(0);
+  const [userData, setuserData] = useState({});
 
   return (
-    <UserContext.Provider value={{ userid, email, setUserid, setEmail,followers,setfollowers }}>
+    <UserContext.Provider value={{ userData , setuserData}}>
       {children}
     </UserContext.Provider>
   );

@@ -1,67 +1,64 @@
-import React, { useEffect,useState } from 'react';
-import { View, Text, ScrollView, Image, Button, StyleSheet } from 'react-native';
-import Posts from './UserPosts';
+
+import { View, Text, ScrollView, Image, Button, StyleSheet, Touchable, TouchableOpacity } from 'react-native';
+import UserPosts from './UserPosts';
 import { useUser } from '../context/Usecontext';
-import axios from 'axios';
 
-const UserData = () => {
-  const { userid } = useUser();
-  const [userdata,setuserdata] =useState([])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-  
-        const response = await axios.post("http://10.0.2.2:6000/fetchUser", { userid }); 
-        console.log(response.data);
-         setuserdata(response.data);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-
-    fetchData();
-  }, [userid]);
-return userdata;
-}; 
+import { useNavigation } from '@react-navigation/native';
 
 const ProfileComponents = () => {
-const userdata = UserData()
-console.log(userdata);
-const {setfollowers}=useUser();
-setfollowers(userdata.follower)
-  
+  const navigation = useNavigation();
+  const { userData, setuserData } = useUser();
+  console.log(userData);
+
+  const handleEdit = () => {
+    navigation.navigate("EditProfile")
+  }
   return (
-    <ScrollView horizontal={false}>
+    <View style={{ flex: 1 }}>
+      <View style={{ maxHeight: 50, width: "100%", backgroundColor: "#80d2f2", flex: 1, flexDirection: "row" }}><Text style={{ fontSize: 35, fontWeight: "bold", color: "black", width: "70%", marginLeft: 10 }}>Dailygram</Text>
+        
+        <TouchableOpacity onPress={()=>navigation.navigate("Menu")}><Image style={{ height: 40, width: 40, marginLeft: 50, marginVertical: 5 }} source={require("../Images/icons/menu-bar.png")} />
+          </TouchableOpacity>
+          </View>
       <View style={styles.top}>
-        <Image style={styles.img} resizeMode='contain' source={require("../Images/img/Logo.jpg")}></Image>
-        <View style={styles.box}><Text>{userdata.posts}</Text><Text>posts</Text></View>
-        <View style={styles.box}><Text>{userdata.follower}</Text><Text>follower</Text></View>
-        <View style={styles.box}><Text>{userdata.following}</Text><Text>following</Text></View>
+        <Image style={styles.img} resizeMode='contain' source={require("../Images/img/Logo.jpg")} />
+        <View style={styles.box}>
+          <Text>{userData.posts}</Text>
+          <Text>posts</Text>
+        </View>
+        <View style={styles.box}>
+          <TouchableOpacity onPress={() => navigation.navigate("FollowPage")}>
+            <Text>{userData.follower}</Text>
+            <Text>follower</Text></TouchableOpacity>
+        </View>
+        <View style={styles.box}>
+          <TouchableOpacity onPress={() => navigation.navigate("FollowPage")}><Text>{userData.following}</Text>
+            <Text>following</Text></TouchableOpacity>
+        </View>
       </View>
-      <View>
-        <Text style={styles.text}>{userdata.username}</Text>
-        <Text style={{ height: 60, color: "black" }}>{userdata.Bio}</Text>
-        <Button color={"#26e0d4"} title="Edit Profile"></Button>
+      <Text style={styles.text}>{userData.username}</Text>
+      <Text style={{ height: 50, color: "black", marginHorizontal: "7%", fontWeight: "300" }}>{userData.Bio}</Text>
+      <View style={{ marginTop: 5, width: "80%", marginHorizontal: "10%" }}>
+        <Button color={"#26e0d4"} onPress={handleEdit} title="Edit Profile" />
       </View>
-      <View style={{ flex: 1 }}>
-    <Posts/>
-      </View>
-    </ScrollView>
-  );
+      <UserPosts />
+    </View>)
 };
+
+
 
 export default ProfileComponents;
 
 const styles = StyleSheet.create({
   top: {
+    maxHeight: 100,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignContent: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 5,
-    alignItems: 'center'
+    marginHorizontal: "7%",
+    marginTop: "3%",
+    alignItems: "center"
+
   },
   img: {
     height: 80,
@@ -69,8 +66,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   box: {
-    alignContent: 'center',
-    alignItems: 'center',
+
   },
   post: {
     height: 260,
@@ -84,9 +80,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'white',
     paddingVertical: 30,
-  },text:{
-    paddingHorizontal:30,
-    fontSize:18,
-    fontWeight:"bold"
+  }, text: {
+    marginHorizontal: "7%",
+    fontSize: 20,
+    color: "black"
   }
 });

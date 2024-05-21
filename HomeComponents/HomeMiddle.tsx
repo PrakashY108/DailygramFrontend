@@ -1,37 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, SafeAreaView, Button, Image, View, TouchableOpacity, Share, Modal, ScrollView, Animated, TextInput } from 'react-native';
 import { FlatList } from 'react-native';
-
+import axios from 'axios';
+import { useUser } from '../context/Usecontext';
 export default function HomeMiddle() {
-  const data = [
-    {
-      title: 'Car',
-      url: require('../Images/img/car.jpg'),
-      description: "I have brought a new car guys please like and follow me"
-    },
-    {
-      title: 'Image',
-      url: require('../Images/img/images.jpg'),
-      description: "I have brought a new camera guys please like and follow me"
-    },
-    {
-      title: 'Logo',
-      url: require('../Images/img/Logo.jpg'),
-      description: "I had designed a new logo guys please like and follow me"
-    },
-    {
-      title: 'Lordshiva',
-      url: require('../Images/img/lordshiva.jpg'),
-      description: "This is the image of Lord Shiva captured by my camera"
-    },
-  ];
-
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
   const [commentopen, setCommentOpen] = useState(false);
+  const [Posts, setPosts] = useState([]);
+  const [follow, setfollow] = useState("follow");
+const{userData,setuserData}=useUser();
 
-  const handleLike = () => {
-    setLiked(!liked);
+  useEffect(() => {
+    fetchallPosts()
+
+  }, [])
+
+  const fetchallPosts = async () => {
+    try {
+  
+      const response = await axios.get("http://10.0.2.2:6000/fetch/allpost");
+      setPosts(response.data)
+      console.log("Found posts", Posts);
+
+
+    } catch (error) {
+      console.error('Error fetching posts: ', error);
+    }
+  };
+
+
+
+  const handleLike = async (id) => {
+    const postid = id;
+
+
+    if (!liked) {
+      const response = await axios.post(`http://10.0.2.2:6000/posts/${postid}/like`, { task: "like" })
+      console.log(response.data);
+
+      setLiked(true)
+    }
+    else {
+      const response = await axios.post(`http://10.0.2.2:6000/posts/${postid}/like`, { task: "dislike" })
+      setLiked(false)
+      console.log(response.data);
+
+    }
   };
 
   const handleComment = () => {
@@ -39,111 +54,149 @@ export default function HomeMiddle() {
     console.log("Open comment");
   };
 
-  const handleSave = () => {
-    setSaved(!saved);
+
+  const handleSave = async (id) => {
+    const postid = id;
+    try {
+      if (!saved) {
+        const response = await axios.post(`http://10.0.2.2:6000/posts/${postid}/save`, { task: "save" })
+        console.log(response.data);
+        setSaved(true)
+
+      }
+      else {
+        const response = await axios.post(`http://10.0.2.2:6000/posts/${postid}/save`, { task: "unsave" })
+        console.log(response.data);
+        setSaved(false)
+      }
+    } catch (error) {
+      console.log(error);
+
+    }
+
   };
 
-  const handleShare = async () => {
+  const handleShare = async (id) => {
+    const postid = id;
+
     try {
       const result = await Share.share({
         message: 'Dailygram post is here. Check it out!',
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
+          console.log("Shared successfully");
+
+          const response = await axios.post(`http://10.0.2.2:6000/posts/${postid}/share`)
+          console.log(response.data);
+        } else {
           console.log("Sharing");
         }
       } else if (result.action === Share.dismissedAction) {
-        console.log("Error while sharing");
+        console.log("Share dismissed");
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error sharing:", error);
     }
   };
 
   const handleClose = () => {
     setCommentOpen(false);
   };
-
+const handlefollow=async(following:Number)=>{
+  try {
+  
+    if(follow==="follow"){
+      console.log("following");
+    const followingtoid= following;
+    console.log(followingtoid);
+    const followerid = await userData.userId
+    console.log(followerid); 
+    const response= await axios.post(`http://10.0.2.2:6000/${followerid}/follow`,{followingtoid})
+    console.log(response.data);
+    setfollow("following")
+    }else{
+        console.log("Unfollowing"); 
+        
+    const followingtoid= following;
+    console.log(followingtoid);
+    const followerid = await userData.userId
+    console.log(followerid);
+    const response= await axios.post(`http://10.0.2.2:6000/${followerid}/unfollow`,{followingtoid})
+    console.log(response.data);
+    setfollow("follow")
+    } 
+  } catch (error) { 
+    console.log("Error while following",error);
+     
+  }
+}
   const renderItem = ({ item }) => (
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.user}>prakashyadav.1</Text>
-        <Image style={styles.post} source={item.url} />
+
+    <SafeAreaView style={styles.container}> 
+      <View style={{ marginTop: 5 }}>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text style={styles.user}>prakashyadav.1</Text>
+          <TouchableOpacity onPress={()=>handlefollow(item.userid)}>
+            <View style={{ borderRadius: 6, borderWidth: 1, borderColor: "lightblue", padding: 2, paddingHorizontal: 5 }}><Text style={{ fontWeight: "700" }}>{follow}</Text></View>
+          </TouchableOpacity>
+        </View>
+        <Image resizeMethod='auto' style={styles.post} source={{ uri: item.url }} />
         <View style={styles.iconContainer}>
-          <TouchableOpacity onPress={handleLike}>
+          <TouchableOpacity style={styles.icontouchables} onPress={() => { handleLike(item.postid) }}>
             <Image style={[styles.icon, liked ? styles.liked : null]} source={require("../Images/icons/like2.png")} />
+            <Text style={styles.iconcount}>{item.likes}</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleComment}>
+          <TouchableOpacity style={styles.icontouchables} onPress={handleComment}>
             <Image style={[styles.icon, commentopen ? styles.liked : null]} source={require("../Images/icons/comment.png")} />
+            <Text style={styles.iconcount}> {item.comments}</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleShare}>
+          <TouchableOpacity style={styles.icontouchables} onPress={() => { handleShare(item.postid) }}>
             <Image style={styles.icon} source={require("../Images/icons/share.png")} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleSave}>
+            <Text style={styles.iconcount}>{item.shares}</Text>
+          </TouchableOpacity >
+          <TouchableOpacity style={styles.icontouchables} onPress={() => { handleSave(item.postid) }} >
             <Image style={[styles.icon, saved ? styles.saved : null]} source={require("../Images/icons/save.webp")} />
+            <Text style={styles.iconcount}>{item.saved} </Text>
           </TouchableOpacity>
         </View>
         <Text style={styles.description}>{item.description}</Text>
         <Text style={styles.time}>a minute ago</Text>
+
       </View>
 
       {/* Modal starts here */}
       <Modal
         visible={commentopen}
         style={styles.modal}
-        animationType='slide'
         transparent={true}>
         <SafeAreaView style={styles.safeArea}>
-          <Text style={{color:"black",fontSize:20,marginHorizontal:40,marginVertical:20}}>Comments</Text>
+          <Text style={{ color: "black", fontSize: 20, marginHorizontal: 40, marginVertical: 20 }}>Comments</Text>
           <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
             <Text>X</Text>
           </TouchableOpacity>
-          <ScrollView style={{ margin: 2}}>
+          <ScrollView style={{ margin: 2 }}>
             {/* comment */}
             <View style={styles.commentcontainer}>
-              <View style={styles.commentuser}><Image style={styles.userphoto} source={require("../Images/img/Logo.jpg")} /><Text style={{ color: "black", marginLeft: 10, fontSize: 15 }}>prakash yadav</Text><Text style={{marginHorizontal:4}}>3 hour ago</Text></View>
-              <View style={styles.comment}><Text style={{marginLeft:10}}>Very nice car Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, eos?</Text></View>
-              <View style={{flex:1,flexDirection:"row"}}><Image style={{height:20,width:20,marginLeft:25}} source={require("../Images/icons/like2.png")}/><Text style={{marginHorizontal:5}}>35</Text>
-              <Image style={{height:20,width:20,marginLeft:25}} source={require("../Images/icons/share.png")}/>
-              </View>
-            </View>
-            {/* comment */}
-            <View style={styles.commentcontainer}>
-              <View style={styles.commentuser}><Image style={styles.userphoto} source={require("../Images/img/lordshiva.jpg")} /><Text style={{ color: "black", marginLeft: 10, fontSize: 15 }}>Ramesh </Text><Text style={{marginHorizontal:4}}>1 hour ago</Text></View>
-              <View style={styles.comment}><Text style={{marginLeft:10}}>Very nice car Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, eos?</Text></View>
-              <View style={{flex:1,flexDirection:"row"}}><Image style={{height:20,width:20,marginLeft:25}} source={require("../Images/icons/like2.png")}/><Text style={{marginHorizontal:5}}>30</Text>
-              <Image style={{height:20,width:20,marginLeft:25}} source={require("../Images/icons/share.png")}/>
-              </View>
-            </View>
-            {/* comment */}
-            <View style={styles.commentcontainer}>
-              <View style={styles.commentuser}><Image style={styles.userphoto} source={require("../Images/img/object.png")} /><Text style={{ color: "black", marginLeft: 10, fontSize: 15 }}>Dinesh yadav</Text><Text style={{marginHorizontal:4}}>30 min ago</Text></View>
-              <View style={styles.comment}><Text style={{marginLeft:10}}>Very nice car Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, eos?</Text></View>
-              <View style={{flex:1,flexDirection:"row"}}><Image style={{height:20,width:20,marginLeft:25}} source={require("../Images/icons/like2.png")}/><Text style={{marginHorizontal:5}}>15</Text>
-              <Image style={{height:20,width:20,marginLeft:25}} source={require("../Images/icons/share.png")}/>
-              </View>
-            </View>
-            {/* comment */}
-            <View style={styles.commentcontainer}>
-              <View style={styles.commentuser}><Image style={styles.userphoto} source={require("../Images/img/images.jpg")} /><Text style={{ color: "black", marginLeft: 10, fontSize: 15 }}>Mahesh</Text><Text style={{marginHorizontal:4}}>3 min ago</Text></View>
-              <View style={styles.comment}><Text style={{marginLeft:10}}>Very nice car Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, eos?</Text></View>
-              <View style={{flex:1,flexDirection:"row"}}><Image style={{height:20,width:20,marginLeft:25}} source={require("../Images/icons/like2.png")}/><Text style={{marginHorizontal:5}}>7</Text>
-              <Image style={{height:20,width:20,marginLeft:25}} source={require("../Images/icons/share.png")}/>
+              <View style={styles.commentuser}><Image style={styles.userphoto} source={require("../Images/img/Logo.jpg")} /><Text style={{ color: "black", marginLeft: 10, fontSize: 15 }}>prakash yadav</Text><Text style={{ marginHorizontal: 4 }}>3 hour ago</Text></View>
+              <View style={styles.comment}><Text style={{ marginLeft: 10 }}>Very nice car Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, eos?</Text></View>
+              <View style={{ flex: 1, flexDirection: "row" }}><Image style={{ height: 20, width: 20, marginLeft: 25 }} source={require("../Images/icons/like2.png")} /><Text style={{ marginHorizontal: 5 }}>35</Text>
+                <Image style={{ height: 20, width: 20, marginLeft: 25 }} source={require("../Images/icons/share.png")} />
               </View>
             </View>
           </ScrollView>
-          <View style={{}}><TextInput style={{margin:10,borderColor:"black",borderRadius:5,borderWidth:1,height:40,fontSize:16}} placeholder='Enter your Comment here'/>
-          <Button title='Post' color={"lightblue"}/></View>
+          <View style={{}}><TextInput style={{ margin: 10, borderColor: "black", borderRadius: 5, borderWidth: 1, height: 40, fontSize: 16 }} placeholder='Enter your Comment here' />
+            <Button title='Post' color={"lightblue"} /></View>
         </SafeAreaView>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 
   return (
     <FlatList
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
-      data={data}
+      data={Posts}
       keyExtractor={(item, index) => index.toString()}
       renderItem={renderItem}
     />
@@ -156,15 +209,16 @@ const styles = StyleSheet.create({
   },
   post: {
     margin: 10,
+    height: 400,
     width: "auto",
     marginHorizontal: 2,
     backgroundColor: "#acdee6"
   },
   user: {
     marginHorizontal: 15,
-    marginTop: 10,
     fontWeight: "bold",
     fontSize: 17,
+    alignItems: "center"
   },
   description: {
     color: 'black',
@@ -187,10 +241,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   liked: {
-    tintColor: 'red',
+    tintColor: 'green',
   },
   saved: {
-    tintColor: 'blue'
+    tintColor: 'green'
   },
   modal: {
     flex: 1,
@@ -212,7 +266,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   closeButton: {
-    alignSelf: 'flex-end', 
+    alignSelf: 'flex-end',
     marginHorizontal: 20
   },
   closeIcon: {
@@ -244,6 +298,21 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
-    marginTop:15
+    marginTop: 15
+  },
+  iconcount: {
+    fontSize: 20,
+    marginLeft: 5,
+    marginRight: 10
+
+  },
+  icontouchables: {
+    height: 40,
+
+    flexDirection: 'row',
+    margin: 2,
+    gap: 2,
+    alignItems: "center",
   }
+
 });

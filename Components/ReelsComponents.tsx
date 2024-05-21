@@ -1,18 +1,25 @@
-import { ScrollView, StyleSheet, Text, View, Image, Share, TouchableOpacity,FlatList } from 'react-native'
+import { ScrollView, StyleSheet, Text, View, Image, Share, TouchableOpacity, FlatList, Dimensions, SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
 import Video from 'react-native-video';
+const { height, width } = Dimensions.get("screen")
 export default function ReelsComponents() {
   const data = [
     {
-      title: 'Logo',
+      title: 'Title here',
       url: require('../Images/video/VID_20231116_194412_323.mp4'),
       description: "Todays event at silveroak university it was very good event and experience was awesome."
     },
     {
-      title: 'Logo',
+      title: 'Title here',
       url: require('../Images/video/VID_20231116_194412_323.mp4'),
       description: "Todays event at silveroak university it was very good event and experience was awesome."
     },
+    {
+      title: 'Title here',
+      url: require('../Images/video/VID_20231116_194412_323.mp4'),
+      description: "Todays event at silveroak university it was very good event and experience was awesome."
+    },
+
   ]
   const [liked, setLiked] = useState(false);
   const [saved, setsaved] = useState(false);
@@ -54,118 +61,128 @@ export default function ReelsComponents() {
     }
   };
   const handlepause = () => {
-    console.log("kdsbfhswa");
-    
     if (!paused) {
       console.log("Pausing video");
       setpaused(true);
       console.log(paused);
-      
+
     } else {
       console.log("Resuming video");
       setpaused(false);
       console.log(paused);
-      
+
     }
   };
-  
+
   const renderItem = ({ item }) => (
+
     <View style={styles.video}>
-      <TouchableOpacity onPress={handlepause}>
-        <Video 
+
+      <Video
         controls={false}
         volume={100}
-       
         paused={paused}
-       
-        resizeMode='contain'
-        fullscreen
-        fullscreenOrientation='landscape'
+        resizeMode='cover'
+        fullscreenOrientation='portrait'
         source={item.url}
         onError={() => console.warn("error while loading")}
-        style={{ height: 760, width: "100%" }}
+        style={{ height: "100%", width: width, padding: 0, margin: 5, position: 'absolute', top: 0 }}
       />
-      <Text style={styles.text}>{item.title}</Text>
-      <Text style={styles.description}>{item.description}</Text>
-      <View style={styles.boxIcon}>
-        <TouchableOpacity onPress={handleLike}>
-          <Image style={[styles.icons, liked ? styles.liked : null]} source={require("../Images/icons/like.jpg")} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handlecomment}>
-          <Image style={[styles.icons, commentclose ? styles.liked : null]} source={require("../Images/icons/comment.png")} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleShare}>
-          <Image style={[styles.icons, share ? styles.liked : null]} source={require("../Images/icons/share.png")} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handlesave}>
-          <Image style={[styles.icons, saved ? styles.liked : null]} source={require("../Images/icons/save.webp")} />
-        </TouchableOpacity>
+      <View style={{position:"absolute",top:0,margin:20}}>
+        <Text style={{fontSize:20,color:'white'}}>Reels</Text>
       </View>
-    </TouchableOpacity>
-    </View>
-  );
+      <TouchableOpacity style={styles.pause} onPress={handlepause}>
+      </TouchableOpacity>
+      <View style={styles.container}>
+        <View style={{flexDirection:"row",alignItems:'center',height:"20%",top:"32%"}}>
+          <Image style={{height:30,width:30,borderRadius:15,marginLeft:12}} source={require("../Images/img/Logo.jpg")}/>
+          <Text style={{color:'white',fontSize:20,fontWeight:"700",marginHorizontal:10}}>Prakash yadav</Text>
+        </View>
+        <Text style={styles.text}>{item.title}</Text>
+        <Text style={styles.description}>{item.description}</Text>
+        <View style={styles.boxIcon}>
+          <TouchableOpacity onPress={handleLike}>
+            <Image style={[styles.icons, liked ? styles.liked : null]} source={require("../Images/icons/like2.png")} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handlecomment}>
+            <Image style={[styles.icons, commentclose ? styles.liked : null]} source={require("../Images/icons/comment.png")} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleShare}>
+            <Image style={[styles.icons, share ? styles.liked : null]} source={require("../Images/icons/share.png")} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handlesave}>
+          </TouchableOpacity>
+          <Image style={[styles.icons, saved ? styles.liked : null]} source={require("../Images/icons/save.webp")} />
+        </View>
+
+      </View>
+      <View style={{ position: "absolute", bottom: 0, margin: 0 }}>
+      </View>
+    </View>)
+
   return (
-  
-      <FlatList
-        data={data}
-        pagingEnabled
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={renderItem}
-      />
-  
+
+    <FlatList
+      data={data}
+      pagingEnabled
+      keyExtractor={(item, index) => index.toString()}
+      renderItem={renderItem}
+    />
+
   );
 }
 
 const styles = StyleSheet.create({
   video: {
-    height: 760,
-    width: "100%",
-    paddingHorizontal: 5,
-    paddingVertical: 2,
-    backgroundColor: 'black'
+    height: height-110,
+    width: width,
+    backgroundColor: 'black',
+    resizeMode: "cover",
 
+  },
+  pause: {
+    height: height, 
+    width: width,
+    position: 'absolute',zIndex:1
+  },
+  container: {
+    height: "44%",
+    width: width,
+    marginHorizontal: 5,
+    position: 'absolute',
+    bottom: 10,
   },
   text: {
-    position: "relative",
-    bottom: 100,
-    width: '100%',
     color: 'white',
-    fontSize: 18,
-    paddingHorizontal: 15,
-    flexWrap: 'wrap',
-    maxHeight: 40
-
+    fontSize: 20,
+    fontWeight: "700",
+    paddingHorizontal: 10,
+    top:"45%",
+  
   },
   description: {
-    position: "relative",
-    bottom: 100,
-    width: '100%',
-    color: 'white',
-    fontSize: 15,
-    paddingHorizontal: 15,
-    flexWrap: 'wrap',
-    maxHeight: 40,
-    paddingTop: 10
+    color: "white",
+    fontWeight: "400",
+    paddingHorizontal: 10,
+   top:"45%",
+
 
   },
   boxIcon: {
-    position: "relative",
-    bottom: 400,
-    left: 330,
-    width: '100%',
-    color: 'white',
-    fontSize: 18,
-    paddingHorizontal: 15
+    position: "absolute",
+    right: 15,
+    top:0,
+    zIndex:1
+  
+
   },
   liked: {
-    backgroundColor: 'green',
-    tintColor: '#8ad0d4'
+    tintColor: 'blue'
   },
-
   icons: {
     height: 40,
     width: 40,
-    borderRadius: 20,
+    borderRadius: 18,
     backgroundColor: "white",
     padding: 17,
     paddingVertical: 10,

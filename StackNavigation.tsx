@@ -1,57 +1,64 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Image, View, StyleSheet, TouchableOpacity } from 'react-native'
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useContext } from 'react';
+
 // navigation
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import TabNavigation from "./TabNavigation";
-import LoginEmail from './Components/LoginEmail';
+import LoginUser from './Components/LoginUser';
 import LoginPassword from './Components/LoginPassword';
 import CreateAccount from './Components/CreateAccount';
 import ForgetPassword from './FunctionalComponents/ForgetPassword';
+import otppassword from './FunctionalComponents/OtpPassword';
+import EditProfile from './Components/EditProfile';
+import Resetpassword from './FunctionalComponents/ResetpasswordComponent'
+import SplashScreen from './Components/SplashScreen';
+import Followpage from './Components/Followpage';
+import { useUser } from './context/Usecontext';
 import NotificationComponent from './FunctionalComponents/NotificationComponent';
-
+import MenuComponents from './Components/MenuComponents';
+import ChatsComponent from './Components/ChatsComponents';
 
 const Stack = createNativeStackNavigator<RootScreenPramProps>();
 
 export type RootScreenPramProps = {
     Dailygram: { name: string },
-    Email: { Email: string },
     Password: { Email: string },
     CreateAccount: { stats: string }
     ForgetPassword: { Email: string },
-    notification: { userId: number }
-
-}
-type notificationProp = NativeStackScreenProps<RootScreenPramProps, 'notification'>
-function StackNavigation({ navigation }: notificationProp) {
+    forgetpassword: { email: string }
+    otppassword: { email: string },
+    Resetpassword: { email: string }}
+function StackNavigation() {
+    const { userData } = useUser();
+    
     return (
-
         <NavigationContainer>
-            <Stack.Navigator initialRouteName='Email' screenOptions={{
+            <Stack.Navigator initialRouteName='Splash' screenOptions={{
                 title: 'Dailygram', headerTitleAlign: 'center',
-                headerStyle: { backgroundColor: '#80d2f2' }, headerTintColor: 'black', headerTitleStyle: { fontWeight: 'bold', fontSize: 37 }
+                headerStyle: { backgroundColor: '#80d2f2' }, headerTintColor: 'black', headerTitleStyle: { fontWeight: '900', fontSize: 36 }
             }}>
                 {/* screens */}
-                <Stack.Screen name="Email" component={LoginEmail} />
+                <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="Login" component={LoginUser} />
                 <Stack.Screen name="Password" component={LoginPassword} />
                 <Stack.Screen name="CreateAccount" component={CreateAccount} />
                 <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
-                <Stack.Screen name="notification" component={NotificationComponent} />
-                <Stack.Screen name="Dailygram" component={TabNavigation} options={{
-                    title: 'Dailygram', headerTitleAlign: 'left',
-                    headerRight: () => (
-                        <View style={styles.container}>
-
-                            <TouchableOpacity style={styles.container} >
-                                <Image style={{ height: 20, width: 20, paddingTop: 3 }} source={require("./Images/icons/notification.png")}></Image>
-                            </TouchableOpacity>
-
-                        </View>
-                    ),
-                    headerStyle: { backgroundColor: '#80d2f2' }, headerTintColor: 'black', headerTitleStyle: { fontWeight: 'bold', fontSize: 37 }
-                }} />
+                <Stack.Screen name="Menu" component={MenuComponents} />
+                <Stack.Screen name="Notification" component={NotificationComponent} options={{
+                title: 'Notifications', headerTitleAlign: 'left',
+                headerStyle: {backgroundColor: 'white' }, headerTintColor: 'black', headerTitleStyle: { fontWeight: '700', fontSize: 20 }
+            }} />
+                <Stack.Screen name="Chats" component={ChatsComponent} options={{
+                title: 'Chats', headerTitleAlign: 'left',
+                headerStyle: {backgroundColor: 'white' }, headerTintColor: 'black', headerTitleStyle: { fontWeight: '700', fontSize: 20 }
+            }} />
+              
+                <Stack.Screen name="otppassword" component={otppassword} />
+                <Stack.Screen name="EditProfile" component={EditProfile} options={{ title: "Edit Profile", headerStyle: { backgroundColor: "#80d2f2" }, headerTitleStyle: { fontSize: 25, fontWeight: "500", color: "black" }, headerTitleAlign: "left" }} />
+                <Stack.Screen name="Resetpassword" component={Resetpassword} />
+                <Stack.Screen name="FollowPage" component={Followpage} options={{ title: userData.username, headerStyle: { backgroundColor: "white" }, headerTitleStyle: { fontSize: 25, fontWeight: "300" }, headerTitleAlign: "left" }} />
+                <Stack.Screen name="Dailygram" component={TabNavigation} options={{headerShown:false}}/>
 
             </Stack.Navigator>
         </NavigationContainer>);

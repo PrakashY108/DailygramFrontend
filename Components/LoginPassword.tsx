@@ -4,7 +4,7 @@ import {
     View, Text, ScrollView, SafeAreaView, StyleSheet, Button, Image, TouchableOpacity, TextInput, ActivityIndicator
 } from "react-native";
 import axios from "axios";
-import { useUser } from '../context/Usecontext';
+
 
 // navigation
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
@@ -17,57 +17,12 @@ export default function LoginPassword({ navigation, route }: Passwordprop) {
     const [PasswordError, setPasswordError] = useState("")
     const [isloading, setisloading] = useState(false)
 
-    const handlePassword = () => {
-        setisloading(true)
-        console.log(route.params)
-        const username = route.params.Email;
-        axios.post("http://10.0.2.2:6000/login", { username, password }).then(() => {
-            console.log("logged in")
-            navigation.dispatch(CommonActions.navigate("Dailygram", { name: username }))
-            axios.post("http://10.0.2.2:6000/fetchUser", { username })
-                .then((response) => {
-                    setisloading(false)
-                    const id = response.data.userId;
-                    // updating user in usercontext 
-                    handlecontext(id, username)
-                })
-        }).catch((err) => {
-            setisloading(false)
-            setPasswordError("Please enter correct password")
-            console.log("please enter correct password", err)
-
-        })
-    }
-    //context
-    const { setUserid, setEmail } = useUser();
-    const handlecontext = (userid, email) => {
-        setUserid(userid)
-        setEmail(email)
-    }
-    if(isloading){
-        return <ActivityIndicator style={{flex:1,alignItems:'center',justifyContent:"center"}} size={"large"} color={"blue"}></ActivityIndicator>
-    }
-
-
-    const forgretPassword = () => {
-        navigation.navigate("ForgetPassword", { Email: "red" });
-    }
+    
     return (
         <ScrollView showsVerticalScrollIndicator={true}
             horizontal={false}>
             <SafeAreaView>
-                <View style={styles.container}>
-                    <Image style={styles.logo} source={require("../Images/img/Logo.jpg")} />
-                    <TextInput style={styles.input} secureTextEntry onChangeText={setpassword} value={password} placeholder="Enter your password " ></TextInput>
-                    {PasswordError ? <Text style={{ color: 'red' }} >{PasswordError}</Text> : null}
-                    <Button color={"green"} onPress={handlePassword} title="Log in" />
-                    <TouchableOpacity onPress={forgretPassword}>
-                        <Text> Forgot Password? <Text style={styles.link}>Click here</Text></Text>
-                    </TouchableOpacity>
-
-
-
-                </View>
+               
             </SafeAreaView>
         </ScrollView>
     )
