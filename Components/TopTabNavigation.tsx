@@ -1,13 +1,13 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Posts from "./UserPosts"
-import Videos from './VideosComponents';
+import Posts from "../src/components/UserPosts"
+
 const Tab = createMaterialTopTabNavigator();
 
 function TopTabNavigation() {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Posts" component={Posts} />
-      <Tab.Screen name="Videos" component={Videos} />
+   
 
     </Tab.Navigator>
   );
