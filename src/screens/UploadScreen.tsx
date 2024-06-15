@@ -13,8 +13,8 @@ const validationSchemaUpload = yup.object().shape({
 });
 
 const UploadComponents = () => {
-  const [pickedImage, setPickedImage] = useState(null); // Specify the type as DocumentPickerResponse | null
-  const [pickedReel, setPickedReel] = useState(null); // Specify the type as DocumentPickerResponse | null
+  const [pickedImage, setPickedImage] = useState({}); // Specify the type as DocumentPickerResponse | null
+  const [pickedReel, setPickedReel] = useState({}); // Specify the type as DocumentPickerResponse | null
   const [openPost, setOpenPost] = useState(false);
   const [openReels, setOpenReels] = useState(false);
   const [Title, setTitle] = useState("");
@@ -27,7 +27,7 @@ const UploadComponents = () => {
         type: [DocumentPicker.types.images],
       });
       setPickedImage(file[0]);
-      console.log("Image picked successfully");
+      console.log("Image picked successfully",file);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         console.log('You cancelled the pick');
@@ -165,7 +165,7 @@ const UploadComponents = () => {
         </Modal>
         <Modal visible={openReels} animationType="slide">
           <TouchableOpacity onPress={() => { setOpenReels(false); setPickedReel(null); }} style={styles.cancelButton}>
-            <Text style={styles.cancelText}>Cancel</Text>
+            <Text style={styles.uploadText}>Cancel</Text>
           </TouchableOpacity>
           <View style={styles.modalContent}>
             <TouchableOpacity onPress={pickReels} style={styles.uploadArea}>
@@ -240,6 +240,7 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   modalContent: {
+    margin:10,
     backgroundColor: '#f6ffff',
     position: 'absolute',
     top: 10,

@@ -44,7 +44,6 @@ export default function SplashScreen({navigation}) {
         } catch (error) {
             console.log(error);
             navigation.replace("LoginUserScreen");
-            
         }
     };
 

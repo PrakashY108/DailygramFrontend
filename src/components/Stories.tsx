@@ -2,14 +2,13 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, Image, TouchableOpacity, Modal, Button, TouchableWithoutFeedback, TouchableWithoutFeedbackBase, Dimensions } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
-import { useUser } from '../context/Usecontext';
+import { getaccessTokenFromAsync } from '../utils/getaccessTokenfromAsync';
 const { height, width } = Dimensions.get("window")
 export default function Stories() {
   const [picked, setpicked] = useState()
   const [Stories, setStories] = useState([])
   const [selectedStory, setSelectedStory] = useState(null);
   const [current, setcurrent] = useState(0);
-  const { userData } = useUser();
   useEffect(() => {
     fetchallStories()
 
@@ -17,8 +16,15 @@ export default function Stories() {
 
   const fetchallStories = async () => {
     try {
-      const response = await axios.get("http://10.0.2.2:6000/fetch/stories")
+      const accessToken = await getaccessTokenFromAsync()
+      const response = await axios.post("http://10.0.2.2:6000/fetch/allstories",null, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`, // Include accessToken in headers
+        }
+      })
       setStories(response.data);
+      console.log("Stories",response.data);
+      
 
     } catch (error) {
       console.log("error while fetching stories", error);
@@ -143,8 +149,10 @@ export default function Stories() {
         <View style={styles.user}>
           <Image style={styles.story} source={require("../assets/img/Logo.jpg")} />
           <TouchableOpacity onPress={pickReels} style={{ position: "relative", flex: 1, alignSelf: "flex-end", top: 20 }}>
-            <Image style={{ height: 36, width: 36, backgroundColor: "white", 
-            borderRadius: 18, borderWidth: 1, position: "absolute", flex: 1, alignSelf: "flex-end", bottom: 28 }} source={require("../assets/icons/pngwing.com.png")} />
+            <Image style={{
+              height: 36, width: 36, backgroundColor: "white",
+              borderRadius: 18, borderWidth: 1, position: "absolute", flex: 1, alignSelf: "flex-end", bottom: 28
+            }} source={require("../assets/icons/pngwing.com.png")} />
           </TouchableOpacity>
           <Text style={styles.storyText}>Your story</Text >
         </View>
@@ -185,7 +193,7 @@ export default function Stories() {
           </TouchableOpacity>
         </SafeAreaView>
       </Modal>
-     
+
     </SafeAreaView>
   );
 }
@@ -216,10 +224,10 @@ const styles = StyleSheet.create({
     maxWidth: 76,
     minWidth: 76,
     borderRadius: 38,
-    borderColor: 'green', 
-    borderWidth: 3, 
+    borderColor: 'green',
+    borderWidth: 3,
     backgroundColor: '#c7e8ed',
-    marginHorizontal: 10, 
+    marginHorizontal: 10,
     marginBottom: 3,
     marginTop: 10
   },

@@ -201,7 +201,8 @@ export default function HomeMiddle() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white"
+    backgroundColor: "white",
+    paddingBottom:15
   },
   post: {
     margin: 10,
