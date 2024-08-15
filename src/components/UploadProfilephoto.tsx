@@ -1,7 +1,6 @@
 import { Button, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import DocumentPicker from 'react-native-document-picker'
-import { Image } from 'react-native-animatable'
 
 export default function UploadProfilephoto() {
   const [profilephoto, setprofilephoto] = useState({})

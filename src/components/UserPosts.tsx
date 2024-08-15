@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Image, StyleSheet,ScrollView, ActivityIndicator } from 'react-native';
 import axios from 'axios';
+import dotenvconfig from '../config/dotenvconfig';
 import { getaccessTokenFromAsync } from '../utils/getaccessTokenfromAsync';
 const UserPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -14,7 +15,7 @@ const UserPosts = () => {
   const fetchUserPosts = async () => {
     try {
       const accessToken = await getaccessTokenFromAsync()
-      const response = await axios.post('http://10.0.2.2:6000/fetch/userspost', { accessToken });
+      const response = await axios.post(`${dotenvconfig.API_URL}/fetch/userspost`, { accessToken });
       const postData = response.data;
       setisloading(false)
       console.log("Received data:", postData);

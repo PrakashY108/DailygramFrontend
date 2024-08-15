@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, SafeAreaView, Button, Image, View, TouchableOpacity, Share, Modal, ScrollView, FlatList, TextInput } from 'react-native';
 import axios from 'axios';
+import dotenvconfig from '../config/dotenvconfig';
 import { getaccessTokenFromAsync } from "../utils/getaccessTokenfromAsync"
 export default function HomeMiddle() {
   const [liked, setLiked] = useState(false);
@@ -17,7 +18,7 @@ export default function HomeMiddle() {
     try {
       const accessToken = await getaccessTokenFromAsync()
       console.log(accessToken);
-      const response = await axios.post("http://10.0.2.2:6000/fetch/allposts", { accessToken });
+      const response = await axios.post(`${dotenvconfig.API_URL}/fetch/allposts`, { accessToken });
       await setPosts(response.data)
       console.log("Found posts", Posts);
     } catch (error) {
@@ -33,13 +34,13 @@ export default function HomeMiddle() {
     console.log(postid);
     
     if (!liked) {
-      const response = await axios.post(`http://10.0.2.2:6000/posts/${postid}/likes`, { task: "like" })
+      const response = await axios.post(`${dotenvconfig.API_URL}/posts/${postid}/likes`, { task: "like" })
       console.log(response.data);
 
       setLiked(true)
     }
     else {
-      const response = await axios.post(`http://10.0.2.2:6000/posts/${postid}/likes`, { task: "dislike" })
+      const response = await axios.post(`${dotenvconfig.API_URL}/posts/${postid}/likes`, { task: "dislike" })
       setLiked(false)
       console.log(response.data);
 
@@ -56,13 +57,13 @@ export default function HomeMiddle() {
     const postid = id;
     try {
       if (!saved) {
-        const response = await axios.post(`http://10.0.2.2:6000/posts/${postid}/saves`, { task: "save" })
+        const response = await axios.post(`${dotenvconfig.API_URL}/posts/${postid}/saves`, { task: "save" })
         console.log(response.data);
         setSaved(true)
 
       }
       else {
-        const response = await axios.post(`http://10.0.2.2:6000/posts/${postid}/saves`, { task: "unsave" })
+        const response = await axios.post(`${dotenvconfig.API_URL}/posts/${postid}/saves`, { task: "unsave" })
         console.log(response.data);
         setSaved(false)
       }
@@ -84,7 +85,7 @@ export default function HomeMiddle() {
         if (result.activityType) {
           console.log("Shared successfully");
 
-          const response = await axios.post(`http://10.0.2.2:6000/posts/${postid}/shares`)
+          const response = await axios.post(`${dotenvconfig.API_URL}/posts/${postid}/shares`)
           console.log(response.data);
         } else {
           console.log("Sharing");
@@ -109,7 +110,7 @@ export default function HomeMiddle() {
         const followingtoid = following;
         console.log(followingtoid);
         console.log("accessToken",accessToken);
-        const response = await axios.post(`http://10.0.2.2:6000/userid/${followingtoid}/follow`, { accessToken })
+        const response = await axios.post(`${dotenvconfig.API_URL}/userid/${followingtoid}/follow`, { accessToken })
         console.log(response.data);
         setfollow("following")
       } else {
@@ -117,7 +118,7 @@ export default function HomeMiddle() {
         const followingtoid = following;
         console.log(followingtoid);
         console.log("accessToken",accessToken);
-        const response = await axios.post(`http://10.0.2.2:6000/userid/${followingtoid}/unfollow`, { accessToken })
+        const response = await axios.post(`${dotenvconfig.API_URL}/userid/${followingtoid}/unfollow`, { accessToken })
         console.log(response.data);
         setfollow("follow")
       }

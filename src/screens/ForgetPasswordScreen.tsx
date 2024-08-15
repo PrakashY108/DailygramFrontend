@@ -8,6 +8,7 @@ import * as yup from 'yup'
 export const validationSchema = yup.object().shape({
   email: yup.string().required('Email is required').email('Invalid email'),
 });
+import dotenvconfig from '../config/dotenvconfig';
 type otppasswordprop = NativeStackScreenProps<RootScreenPramProps, 'otpPasswordScreen'>
 export default function ForgetPassword({navigation}:otppasswordprop) {
   const [email,setemail] =useState("");
@@ -20,7 +21,7 @@ export default function ForgetPassword({navigation}:otppasswordprop) {
       console.log(email);
      await validationSchema.validate({email},{ abortEarly: false })
      console.log("Validated");
-     await axios.post("http://10.0.2.2:6000/send/mail/otp",{email}).then(()=>{
+     await axios.post(`${dotenvconfig.API_URL}/send/mail/otp`,{email}).then(()=>{
        navigation.navigate("otpPasswordScreen",{email:email})
      }).catch((err)=>{
       setemailerror("User with this email does not exists")

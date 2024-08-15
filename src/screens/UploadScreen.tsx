@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Button, StyleSheet, Alert, Modal, TextInput, Text, TouchableOpacity, ScrollView } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import axios from 'axios';
+import dotenvconfig from '../config/dotenvconfig';
 import * as yup from 'yup';
 import { getaccessTokenFromAsync } from '../utils/getaccessTokenfromAsync';
 
@@ -20,6 +21,7 @@ const UploadComponents = () => {
   const [Title, setTitle] = useState("");
   const [Description, setDescription] = useState("");
   const [errors, setErrors] = useState({});
+ 
 
   const pickPosts = async () => {
     try {
@@ -52,9 +54,9 @@ const UploadComponents = () => {
       formData.append('name', "posts");
       formData.append('title', Title);
       formData.append('description', Description);
-     const accessToken = await getaccessTokenFromAsync()
+      const accessToken = await getaccessTokenFromAsync()
      console.log(accessToken);
-     const response = await axios.post("http://10.0.2.2:6000/uploads/posts", formData, {
+     const response = await axios.post(`${dotenvconfig.API_URL}/uploads/posts`, formData, {
       headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${accessToken}`, // Include accessToken in headers
@@ -94,7 +96,7 @@ const UploadComponents = () => {
     }
   };
 
-  const uploadVideos = async () => {
+  const uploadReels = async () => {
     try {
       const formData = new FormData();
       formData.append('file', {
@@ -105,18 +107,20 @@ const UploadComponents = () => {
       formData.append('name', "reels");
       formData.append('title', Title);
       formData.append('description', Description);
-
-      const response = await axios.post("http://10.0.2.2:6000/uploads/videos", formData, {
+      const accessToken = await getaccessTokenFromAsync()
+      
+      const response = await axios.post(`http://10.0.2.2:6000/uploads/reels`, formData, {
         timeout: 10000,
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${accessToken}`, // Include accessToken in headers
         },
       });
-      console.log("Video uploaded successfully");
-      Alert.alert("Video uploaded successfully");
+      console.log("Reel uploaded successfully");
+      Alert.alert("Reel uploaded successfully");
       console.log(response.data);
     } catch (err) {
-      console.log('Error uploading video:', err);
+      console.log('Error uploading reel:', err);
     }
   };
 
@@ -184,7 +188,7 @@ const UploadComponents = () => {
                 placeholder="Description"
               />
               {errors.Description && <Text style={styles.error}>{errors.Description}</Text>}
-              <Button title="Post" onPress={uploadVideos} color="green" />
+              <Button title="Post Reel" onPress={uploadReels} color="green" />
             </View>
           </View>
         </Modal>

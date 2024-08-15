@@ -1,5 +1,6 @@
 import { StyleSheet, Button, TextInput, View, Image, SafeAreaView, Text } from 'react-native';
 import React, { useState } from 'react';
+import dotenvconfig from '../config/dotenvconfig';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootScreenPramProps } from '../navigation/StackNavigation';
 import axios from 'axios';
@@ -15,7 +16,7 @@ export default function Otppassword({ navigation, route }: otpPasswordProps) {
     console.log(route.params, email);
 
     try {
-      await axios.post("http://10.0.2.2:6000/verify/otp", { otp, email });
+      await axios.post(`${dotenvconfig.API_URL}/verify/otp`, { otp, email });
       navigation.navigate("ResetpasswordScreen", { email: email });
     } catch (error) {
       setErrorMessage("Invalid OTP. Please try again.");

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, ScrollView, Image, Button, StyleSheet, Touchable, TouchableOpacity } from 'react-native';
 import UserPosts from '../components/UserPosts';
+import dotenvconfig from '../config/dotenvconfig';
 import { useNavigation } from '@react-navigation/native';
 import { getaccessTokenFromAsync } from '../utils/getaccessTokenfromAsync';
 import axios from 'axios';
@@ -18,7 +19,7 @@ const ProfileComponents = () => {
 const fetchuserDetails=async()=>{
   const accessToken = await getaccessTokenFromAsync()
   console.log(accessToken); 
-  const response= await axios.post("http://10.0.2.2:6000/fetch/user/details",{accessToken})
+  const response= await axios.post(`${dotenvconfig.API_URL}/fetch/user/details`,{accessToken})
   console.log( response.data);
   setUser(response.data)
   

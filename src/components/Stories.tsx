@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, Image, TouchableOpacity, Modal, Button, TouchableWithoutFeedback, TouchableWithoutFeedbackBase, Dimensions } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
+import dotenvconfig from '../config/dotenvconfig';
 import { getaccessTokenFromAsync } from '../utils/getaccessTokenfromAsync';
 const { height, width } = Dimensions.get("window")
 export default function Stories() {
@@ -17,7 +18,7 @@ export default function Stories() {
   const fetchallStories = async () => {
     try {
       const accessToken = await getaccessTokenFromAsync()
-      const response = await axios.post("http://10.0.2.2:6000/fetch/allstories",null, {
+      const response = await axios.post(`${dotenvconfig.API_URL}/fetch/allstories`,null, {
         headers: {
           'Authorization': `Bearer ${accessToken}`, // Include accessToken in headers
         }
@@ -67,7 +68,7 @@ export default function Stories() {
       });
       formData.append('id', userid);
       formData.append('name', "stories");
-      const response = await axios.post("http://10.0.2.2:6000/upload/cloudinary", formData, {
+      const response = await axios.post(`${dotenvconfig.API_URL}/upload/cloudinary`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

@@ -18,19 +18,16 @@ import notificationScreen from '../screens/NotificationScreen';
 import menuScreen from '../screens/MenuScreen';
 import ChatsScreen from '../screens/ChatsScreen';
 import { useUser } from "../context/Usecontext"
+import Chatscomponents from '../components/Chatscomponents';
 const Stack = createNativeStackNavigator<RootScreenPramProps>();
 export type RootScreenPramProps = {
     PasswordScreen: { Email: string },
     DailygramScreen: { name: string },
     otpPasswordScreen: { email: string },
-    // forgetpassword: { email: string }
-    // CreateAccount: { stats: string }
-    // ForgetPassword: { Email: string },
-    // Resetpassword: { email: string }
+
 }
 function StackNavigation() {
     const { userData, setuserData } = useUser();
-
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName='SplashScreen' screenOptions={{
@@ -57,7 +54,7 @@ function StackNavigation() {
                         headerTintColor: 'black',
                         headerTitleStyle: { fontWeight: '700', fontSize: 20 }
                     }} />
-                <Stack.Screen name="Chats" component={ChatsScreen} options={{
+                <Stack.Screen name="ChatScreen" component={ChatsScreen} options={{
                     title: 'Chats', headerTitleAlign: 'left',
                     headerStyle: { backgroundColor: 'white' },
                     headerTintColor: 'black',
@@ -80,7 +77,12 @@ function StackNavigation() {
                         headerTitleStyle: { fontSize: 25, fontWeight: "300" },
                         headerTitleAlign: "left"
                     }} /> 
-
+                <Stack.Screen name="ChatsComponents" component={Chatscomponents} options={{
+                        title: "Chats",
+                        headerStyle: { backgroundColor: "lightblue" },
+                        headerTitleStyle: { fontSize: 20, fontWeight: "300"},
+                        headerTitleAlign: "left"
+                    }}/> 
             </Stack.Navigator>
         </NavigationContainer>);
 

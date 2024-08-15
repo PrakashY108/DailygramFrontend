@@ -2,6 +2,7 @@ import { SafeAreaView, StyleSheet,Text, Image, TextInput, View, ActivityIndicato
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import filter from "lodash.filter"
+import dotenvconfig from '../config/dotenvconfig';
 import { getaccessTokenFromAsync } from '../utils/getaccessTokenfromAsync';
 export default function SearchComponents() {
 
@@ -23,7 +24,7 @@ export default function SearchComponents() {
     try {
       const accessToken =await getaccessTokenFromAsync()
       console.log(accessToken);
-      const response = await axios.post("http://10.0.2.2:6000/fetch/users",{accessToken});
+      const response = await axios.post(`${dotenvconfig.API_URL}/fetch/users`,{accessToken});
       console.log(response.data);
       setData(response.data);
       setOriginalData(response.data);
@@ -71,7 +72,6 @@ export default function SearchComponents() {
       </View>
     );
   };
-
   return (
     <SafeAreaView>
    

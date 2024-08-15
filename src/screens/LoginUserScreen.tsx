@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { validationSchemaLoginacc } from "../utils/ValidationSchema";
 import  axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import dotenvconfig from "../config/dotenvconfig";
 function LoginUser() {
     const navigation = useNavigation()
     const [username, setusername] = useState("");
@@ -18,7 +19,7 @@ function LoginUser() {
     const handleEmail = async () => {
         try{
             await validationSchemaLoginacc.validate({ username, password }, { abortEarly: false })
-                const response=  await axios.post("http://10.0.2.2:6000/user/login",{username,password}).then(async(response)=>{
+                const response=  await axios.post(`${dotenvconfig.API_URL}/user/login`,{username,password}).then(async(response)=>{
 
                     console.log(response.data);
                     // Storing accessToken in async storage 
@@ -50,7 +51,7 @@ function LoginUser() {
             <SafeAreaView>
 
                 <View style={styles.container}>
-                    <Text style={styles.heading}>Welcome To Dailygram</Text>
+                    <Text style={styles.heading}>Welcome To Dailygram {dotenvconfig.API_URL}</Text>
                     <Image style={styles.logo} source={require("../assets/img/Logo.jpg")} />
 
                     <TextInput

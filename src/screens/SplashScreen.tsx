@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import axios from 'axios';
+import dotenvconfig from '../config/dotenvconfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function SplashScreen({navigation}) {
     const [spinner, setSpinner] = useState(true);
@@ -29,7 +30,7 @@ export default function SplashScreen({navigation}) {
          if(accessToken==null){
             navigation.replace("LoginUserScreen");
          }
-         await axios.post("http://10.0.2.2:6000/verify/token", 
+         await axios.post(`${dotenvconfig.API_URL}/verify/token`, 
     null,
     {
         headers: {
