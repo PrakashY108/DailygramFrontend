@@ -1,6 +1,6 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, View, Image } from 'react-native'
+import { SafeAreaView, ScrollView, StyleSheet, Text, View, Image,Button} from 'react-native'
 import React from 'react'
-import CustomButton from '../CustomComponents/CustomButton'
+
 
 
 
@@ -24,7 +24,7 @@ export default function FriendSuggestion() {
                         <View style={styles.followed} >
                             <Image source={require('../Images/img/lordshiva.jpg')} style={styles.followedimg} /><Text>By Rameshbhai</Text>
                         </View>
-                        <CustomButton title="Follow" />
+                        <Button title="Follow"  color={"blue"}/>
                     </View>
 
                     {/* Friend request 2 */}

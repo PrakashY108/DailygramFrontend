@@ -1,11 +1,10 @@
-import { StyleSheet, Text, Touchable, Image, View } from 'react-native'
+import { StyleSheet, Image, View } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import searchScreen from '../screens/SearchScreen.tsx'
 import homePageScreen from '../screens/HomePageScreen.tsx'
 import reelsScreen from '../screens/ReelsScreen.tsx'
 import profileScreen from '../screens/ProfileScreen.tsx'
-import uploadScreen from '../screens/UploadScreen.tsx'
 import UploadScreen from '../screens/UploadScreen.tsx'
 
 const Tab = createBottomTabNavigator()

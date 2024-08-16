@@ -1,5 +1,6 @@
 import { Button, StyleSheet, TextInput, View, Text,Alert } from 'react-native'
 import React, { useContext, useState } from 'react'
+import dotenvconfig from '../config/dotenvconfig'
 import { useUser } from "../context/Usecontext"
 import { validationSchemaEditprofile } from '../utils/ValidationSchema'
 import axios from 'axios'
@@ -20,11 +21,12 @@ export default function EditProfile() {
   const [errorCannoteditEmail, seterrorcannoteditEmail] = useState(false);
 
   const handleUpdate = async () => {
+    console.log(userData);
     try {
       const userId = userData.userId;
          await validationSchemaEditprofile.validate({ firstName, lastName, username, phoneNo, email, DOB }, { abortEarly: false });
 
-        const response = await axios.post("http://10.0.2.2:6000/update/user", { 
+        const response = await axios.post(`${dotenvconfig.API_URL}/update/user`, { 
           firstName,
             lastName,
             DOB,

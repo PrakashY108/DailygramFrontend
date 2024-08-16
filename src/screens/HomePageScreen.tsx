@@ -13,7 +13,7 @@ export default function HomePage() {
    <TouchableOpacity onPress={()=>navigation.navigate("NotificationScreen")}>
       <Image style={{height:25,width:25,marginLeft:30,marginVertical:13}} source={require("../assets/icons/notification.png")}/>
    </TouchableOpacity>
-   <TouchableOpacity onPress={()=>navigation.navigate("Chats")}>
+   <TouchableOpacity onPress={()=>navigation.navigate("ChatScreen")}>
       <Image style={{height:35,width:35,borderRadius:20,marginLeft:15,marginVertical:10}} source={require("../assets/icons/chat11.png")}/>
    </TouchableOpacity>
       </View>

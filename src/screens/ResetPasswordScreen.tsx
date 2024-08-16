@@ -20,7 +20,6 @@ export default function ResetpasswordComponent({ navigation, route }: Resetpassw
 
     const handleChangePassword = async () => {
       console.log(email);
-    
         try {
              await validationSchema.validate({ password, confirmPassword }, { abortEarly: false });
             Alert.alert("Password Changed Successfully!!");

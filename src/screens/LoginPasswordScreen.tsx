@@ -6,7 +6,6 @@ import {
 // navigation
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootScreenPramProps } from '../navigation/StackNavigation'
-import { CommonActions, StackActions } from "@react-navigation/native";
 type Passwordprop = NativeStackScreenProps<RootScreenPramProps, 'DailygramScreen'>
 
 export default function LoginPassword({ navigation, route }: Passwordprop) {

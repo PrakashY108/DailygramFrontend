@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, ScrollView, SafeAreaView, StyleSheet, Button, Image, TextInput, Alert, Modal } from "react-native";
 import axios from 'axios';
+import dotenvconfig from "../config/dotenvconfig";
 import { validationSchemaCreateAcc } from "../utils/ValidationSchema";
 import DatePicker from "react-native-date-picker";
 import DocumentPicker from 'react-native-document-picker';
@@ -28,7 +29,7 @@ function CreateAccount({ navigation }) {
                 firstName, lastName, email, phoneNo, DOB, username, password, confirmPassword
             }, { abortEarly: false });
 
-            axios.post('http://10.0.2.2:6000/user/createUser', {
+            axios.post(`${dotenvconfig.API_URL}/user/createUser`, {
                 firstName,
                 lastName,
                 email,

@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Image, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import *as Animatable from 'react-native-animatable'
 import axios from 'axios'
+import dotenvconfig from '../config/dotenvconfig'
 import {getaccessTokenFromAsync} from "../utils/getaccessTokenfromAsync"
 
 export default function NotificationComponent() {
@@ -15,10 +16,10 @@ export default function NotificationComponent() {
           const accessToken = await getaccessTokenFromAsync();
           console.log("Token",accessToken);
           
-      const response = await axios.post(`http://10.0.2.2:6000/fetch/notifications`,null, {
+      const response = await axios.post(`${dotenvconfig.API_URL}/fetch/notifications`,null, {
         headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${accessToken}`, // Include accessToken in headers
+            'Authorization': `Bearer ${accessToken}`,
         },
     })
       setnotification(response.data);
