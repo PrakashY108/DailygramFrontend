@@ -6,7 +6,7 @@ import { RootScreenPramProps } from '../navigation/StackNavigation';
 import axios from 'axios';
 
 type otpPasswordProps = NativeStackScreenProps<RootScreenPramProps, 'otpPasswordScreen'>;
-
+  
 export default function Otppassword({ navigation, route }: otpPasswordProps) {
   const [otp, setOtp] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
